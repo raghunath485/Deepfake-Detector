@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake & AI Media Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        #loadingOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            display: none; align-items: center; justify-content: center;
+            flex-direction: column;
+            font-size: 1.3rem; color: #f8fafc; z-index: 1000;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border-left-color: #3b82f6;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <div>Running Multi-Modal Forensic Analysis...</div>
+    </div>
+    <div class="container">
+        <h1>Deepfake & AI Image Detection</h1>
+        <p style="color: #94a3b8; font-size: 0.95rem;">
+            Upload an image to inspect for generative AI patterns, face manipulation, frequency anomalies, and compression signatures.
+        </p>
+
+        {% if metrics %}
+        <div style="background: rgba(59, 130, 246, 0.12); border: 1px solid #3b82f6; border-radius: 8px; padding: 12px; margin: 15px 0; text-align: left; font-size: 0.9rem;">
+            <strong style="color: #60a5fa;">Trained Model Benchmark (Test Set):</strong><br>
+            Accuracy: <strong>{{ metrics.accuracy }}%</strong> |
+            Precision: <strong>{{ metrics.precision }}%</strong> |
+            Recall: <strong>{{ metrics.recall }}%</strong> |
+            F1-Score: <strong>{{ metrics.f1 }}%</strong>
+        </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="upload-card">
+                <svg width="48" height="48" fill="none" stroke="#64748b" viewBox="0 0 24 24" style="margin-bottom: 10px;" id="uploadIcon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg><br>
+                <label for="file" style="font-weight: 500; cursor: pointer;">Select face image (PNG, JPG, JPEG, BMP):</label><br>
+                <input type="file" name="file" id="file" accept="image/*" required><br>
+                <div id="previewContainer" style="display: none; margin-top: 15px;">
+                    <img id="imagePreview" src="#" alt="Preview" style="max-height: 220px; border-radius: 8px; border: 1px solid #334155;">
+                </div>
+            </div>
+            <button type="submit">Analyze Image</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </div>
+    <script>
+        const fileInput = document.getElementById('file');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const uploadIcon = document.getElementById('uploadIcon');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    imagePreview.src = evt.target.result;
+                    previewContainer.style.display = 'block';
+                    uploadIcon.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(){
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+/* Modern High-End Deepfake Detection & Forensic UI */
+:root {
+    --bg-color: #0b1120;
+    --card-bg: #1e293b;
+    --card-inner: #0f172a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --fake-color: #ef4444;
+    --fake-glow: rgba(239, 68, 68, 0.25);
+    --real-color: #10b981;
+    --real-glow: rgba(16, 185, 129, 0.25);
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border-color: #334155;
+    --border-subtle: #1e293b;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 30px 15px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.result-container {
+    max-width: 960px;
+    text-align: left;
+}
+
+.report-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h1 {
+    margin: 0 0 10px 0;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.file-badge {
+    display: inline-block;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    word-break: break-all;
+}
+
+/* Verdict Hero Banner */
+.verdict-hero {
+    margin: 25px 0;
+    padding: 24px 28px;
+    border-radius: 14px;
+    border: 1.5px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.hero-fake {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(15, 23, 42, 0.85) 100%);
+    border-color: var(--fake-color);
+    box-shadow: 0 0 30px var(--fake-glow);
+}
+
+.hero-real {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.16) 0%, rgba(15, 23, 42, 0.85) 100%);
+    border-color: var(--real-color);
+    box-shadow: 0 0 30px var(--real-glow);
+}
+
+.verdict-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.verdict-status-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.hero-fake .verdict-status-title {
+    color: #fca5a5;
+}
+
+.hero-real .verdict-status-title {
+    color: #6ee7b7;
+}
+
+.verdict-confidence-badge {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+}
+
+/* Dual Real vs Fake Probability Meter */
+.probability-meter-container {
+    background: rgba(15, 23, 42, 0.7);
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.prob-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+}
+
+.prob-fake-label {
+    color: #f87171;
+}
+
+.prob-real-label {
+    color: #34d399;
+}
+
+.dual-progress-bar {
+    width: 100%;
+    height: 14px;
+    background: #0f172a;
+    border-radius: 7px;
+    overflow: hidden;
+    display: flex;
+}
+
+.bar-fake {
+    height: 100%;
+    background: linear-gradient(90deg, #dc2626, #ef4444);
+    transition: width 0.8s ease-in-out;
+}
+
+.bar-real {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    transition: width 0.8s ease-in-out;
+}
+
+/* Forensic Pillars */
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin: 32px 0 16px 0;
+    letter-spacing: -0.3px;
+}
+
+.pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.pillar-card {
+    background: var(--card-inner);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.pillar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.pillar-name {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #f1f5f9;
+}
+
+.risk-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.risk-high {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid #ef4444;
+}
+
+.risk-moderate {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid #f59e0b;
+}
+
+.risk-low {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid #10b981;
+}
+
+.pillar-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0 0 14px 0;
+    line-height: 1.35;
+}
+
+.pillar-score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pillar-progress {
+    flex: 1;
+    height: 8px;
+    background: #1e293b;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.pillar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+.pillar-score-text {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #94a3b8;
+    min-width: 38px;
+    text-align: right;
+}
+
+/* Findings Checklist */
+.findings-box {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 22px;
+    margin: 25px 0;
+}
+
+.findings-box h3 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    font-size: 1.15rem;
+    color: #e2e8f0;
+}
+
+.findings-box ul {
+    margin: 0;
+    padding-left: 22px;
+    color: #cbd5e1;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* Explainable AI Grid */
+.image-comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 16px 0 30px 0;
+}
+
+@media (max-width: 768px) {
+    .image-comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.image-card {
+    background: var(--card-inner);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.image-card h4 {
+    margin: 4px 0 14px;
+    font-size: 0.95rem;
+    color: #94a3b8;
+}
+
+.image-card img {
+    width: 100%;
+    max-height: 380px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.image-card p.caption {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 10px;
+    text-align: left;
+    line-height: 1.4;
+}
+
+/* Benchmark Card */
+.benchmark-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+    border: 1px solid #38bdf8;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin: 30px 0;
+}
+
+.benchmark-header {
+    font-size: 0.95rem;
+    color: #38bdf8;
+    margin-bottom: 16px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.stat-item {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #f8fafc;
+}
+
+.stat-label {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Actions */
+.actions-row {
+    text-align: center;
+    margin-top: 35px;
+}
+
+a.button, button {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+a.button:hover, button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+/* Upload Card in Index */
+.upload-card {
+    border: 2px dashed #475569;
+    border-radius: 12px;
+    padding: 40px 20px;
+    background: rgba(15, 23, 42, 0.5);
+    margin: 25px 0;
+}
+
+input[type="file"] {
+    margin: 15px 0;
+    color: var(--text-secondary);
+}

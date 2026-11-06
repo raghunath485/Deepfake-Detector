@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection & Forensic Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container result-container">
+        
+        <!-- Header -->
+        <div class="report-header">
+            <h1>Analysis & Forensic Report</h1>
+            <span class="file-badge">Inspected File: <strong>{{ filename }}</strong></span>
+        </div>
+
+        <!-- Main Verdict Hero Card -->
+        <div class="verdict-hero {% if 'Deepfake' in label or 'AI-Generated' in label %}hero-fake{% else %}hero-real{% endif %}">
+            <div class="verdict-top-row">
+                <div class="verdict-status-title">
+                    {% if 'Deepfake' in label or 'AI-Generated' in label %}
+                        <span class="icon">⚠️</span> Deepfake / AI-Generated
+                    {% else %}
+                        <span class="icon">✅</span> Authentic / Real Image
+                    {% endif %}
+                </div>
+                <div class="verdict-confidence-badge">
+                    Confidence: <strong>{{ confidence }}%</strong>
+                </div>
+            </div>
+
+            <!-- Dual Real vs Fake Probability Meter -->
+            <div class="probability-meter-container">
+                <div class="prob-labels">
+                    <span class="prob-fake-label">Fake Probability: <strong>{{ fake_prob }}%</strong></span>
+                    <span class="prob-real-label">Real Probability: <strong>{{ real_prob }}%</strong></span>
+                </div>
+                <div class="dual-progress-bar">
+                    <div class="bar-fake" style="width: {{ fake_prob }}%;"></div>
+                    <div class="bar-real" style="width: {{ real_prob }}%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Four Forensic Pillars Breakdown -->
+        <h3 class="section-title">Deepfake Forensic Pillars Analysis</h3>
+        <div class="pillars-grid">
+            {% for pillar in pillars %}
+            <div class="pillar-card">
+                <div class="pillar-top">
+                    <span class="pillar-name">{{ pillar.name }}</span>
+                    <span class="risk-badge risk-{{ pillar.risk.lower() }}">{{ pillar.risk }} Risk</span>
+                </div>
+                <p class="pillar-desc">{{ pillar.description }}</p>
+                <div class="pillar-score-row">
+                    <div class="pillar-progress">
+                        <div class="pillar-fill" style="width: {{ pillar.score }}%;"></div>
+                    </div>
+                    <span class="pillar-score-text">{{ pillar.score }}%</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Forensic Observations Checklist -->
+        <div class="findings-box">
+            <h3>Forensic Observations & Indicators</h3>
+            <ul>
+                {% for finding in findings %}
+                    <li>{{ finding }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Explainable AI Comparison: Original vs Heatmap -->
+        <h3 class="section-title">Explainable AI Visual Comparison</h3>
+        <div class="image-comparison-grid">
+            <div class="image-card">
+                <h4>Original Uploaded Image</h4>
+                <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Original Image" />
+            </div>
+            <div class="image-card">
+                <h4>Error Level Analysis (ELA) Heatmap</h4>
+                <img src="{{ url_for('static', filename='uploads/' + ela_filename) }}" alt="ELA Artifact Heatmap" />
+                <p class="caption">Warm colors (yellow/red) highlight compression quantization discrepancies and artificial blending boundaries.</p>
+            </div>
+        </div>
+
+        <!-- Model Benchmark Card -->
+        {% if metrics %}
+        <div class="benchmark-card">
+            <div class="benchmark-header">
+                <strong>Ensemble Benchmark on Dataset (Test Evaluation):</strong>
+            </div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-value">{{ metrics.accuracy }}%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ metrics.precision }}%</span>
+                    <span class="stat-label">Precision</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ metrics.recall }}%</span>
+                    <span class="stat-label">Recall</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ metrics.f1 }}%</span>
+                    <span class="stat-label">F1-Score</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="actions-row">
+            <a href="{{ url_for('index') }}" class="button">Analyze Another Image</a>
+        </div>
+    </div>
+</body>
+</html>
